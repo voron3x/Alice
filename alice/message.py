@@ -2,6 +2,7 @@
 from alice import Alice
 import urllib.parse
 import alice.content
+import urllib.parse
 
 
 class Message(Alice):
@@ -13,6 +14,7 @@ class Request(Message):
     def __init__(self, *args, **kwargs):
         self.req_method = 'GET'
         self.env = None
+        self.url = urllib.parse.urlparse
         super().__init__(*args, **kwargs)
 
     def test(self):
@@ -29,8 +31,8 @@ class Request(Message):
         
         # Extract headers from environment
         headers = self.content.headers
-        #url = self.url
-        #base = self.base
+        url = self.url
+        base = self.base()
 
         for name in env:
             if name.startswith('HTTP_'):
