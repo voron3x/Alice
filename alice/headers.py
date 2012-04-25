@@ -90,7 +90,7 @@ class Headers(Alice):
     def add(self, name, *args):
         # Make sure we have a normal case entry for name
         lcname = name.lower()
-        if not NORMAL_CASE_HEADERS.has_key(lcname):
+        if not NORMAL_CASE_HEADERS.get(lcname):
             NORMAL_CASE_HEADERS[lcname] = name
 
         name = lcname

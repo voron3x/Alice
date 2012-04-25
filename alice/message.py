@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
-from alice import Alice
 import urllib.parse
 import alice.content
 import urllib.parse
 
 
-class Message(Alice):
+class Message:
     def __init__(self, *args, **kwargs):
         self.content = alice.content.Single()
-        super().__init__(*args, **kwargs)
 
 class Request(Message):
     def __init__(self, *args, **kwargs):
@@ -28,11 +26,11 @@ class Request(Message):
     def _parse_env(self, env):
         # Make environment accessible
         self.env = env
-        
+
         # Extract headers from environment
         headers = self.content.headers
         url = self.url
-        base = self.base()
+        #base = self.base()
 
         for name in env:
             if name.startswith('HTTP_'):
@@ -41,7 +39,7 @@ class Request(Message):
                 name = name.replace('_','-')
                 headers.header(name, value)
 
-            
+
 
 class Response(Message):
     def __init__(self, *args, **kwargs):
@@ -51,5 +49,5 @@ class Response(Message):
     def test(self):
         print("This is test in response mrthod")
 
-        
-        
+
+
