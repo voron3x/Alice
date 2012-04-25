@@ -66,16 +66,16 @@ WEBSOCKET_HEADERS = [
 ]
 MISC_HEADERS = ['DNT']
 HEADERS  = (
-      GENERAL_HEADERS 
-    + REQUEST_HEADERS 
+      GENERAL_HEADERS
+    + REQUEST_HEADERS
     + RESPONSE_HEADERS
-    + ENTITY_HEADERS 
-    + WEBSOCKET_HEADERS 
+    + ENTITY_HEADERS
+    + WEBSOCKET_HEADERS
     + MISC_HEADERS
 )
 
 #Lowercase headers
-NORMAL_CASE_HEADERS = None
+NORMAL_CASE_HEADERS = dict()
 for name in HEADERS:
     NORMAL_CASE_HEADERS[name.lower()] = name
 
@@ -92,12 +92,12 @@ class Headers(Alice):
         lcname = name.lower()
         if not NORMAL_CASE_HEADERS.has_key(lcname):
             NORMAL_CASE_HEADERS[lcname] = name
-        
+
         name = lcname
 
         #Add lines
         self.headers[name] = args
-        
+
         return self
 
     def header(self, name, *args):
@@ -109,4 +109,4 @@ class Headers(Alice):
 
         return self.headers[name.lower()]
 
-    
+

@@ -7,11 +7,10 @@ class WSGI(Server):
         super().__init__(*args, **kwargs)
 
     def run(self, env, start_response):
-        #preload application
         app = self.app()
         app.on_transaction.test()
 
-        tx = app.on_transaction
+        tx = self.on_transaction()
         req = tx.req
         req.parse(env)
 

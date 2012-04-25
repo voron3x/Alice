@@ -4,10 +4,10 @@ from alice.message import Request, Response
 
 class TransactionHTTP(Transaction):
     def __init__(
-            self, 
+            self,
             req = Request(),
             res = Response(),
-            *args, 
+            *args,
             **kwargs
         ):
         self.req = req

@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from alice import Alice
-
-class Server(Alice):
+class Server(object):
     def __init__(self,app_class = None, *args, **kwargs):
         self.app_class = app_class
         self.application = None
-        super().__init__(*args,**kwargs)
 
     def app(self):
         if self.application is None:
@@ -14,7 +11,7 @@ class Server(Alice):
         return self.application
 
     def on_transaction(self):
-        return self.app.on_transaction
+        return self.app().on_transaction
 
     def on_request(self,tx):
         app = self.app()
