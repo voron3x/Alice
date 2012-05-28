@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-class Server(object):
+class Server:
     def __init__(self,app_class = None, *args, **kwargs):
         self.app_class = app_class
         self.application = None

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+
 import urllib.parse
 import encodings.idna
 
@@ -15,10 +16,3 @@ def url_escape(string):
     url_escape(string)
     """
     return urllib.parse.quote(string, encoding='utf-8')
-
-
-
-
-    
-
-    

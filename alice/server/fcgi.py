@@ -36,8 +36,8 @@ if __debug__:
     DEBUGLOG = '/tmp/fcgi.log'
 
     def _debug(level, msg):
-        """ 
-        Дебаг утилитка принимает на вход два параметра 
+        """
+        Дебаг утилитка принимает на вход два параметра
         первый цифра уровня логирования, второй строка сообщения
         """
         if DEBUG < level:
@@ -66,11 +66,11 @@ class FastCGI(Server):
             s = None
             try:
                 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                
-                # Разрешаем выполнять bind() даже в случае, 
-                # если другая программа недавно слушала тот же порт. 
-                # Без этого, программа не сможет работать с портом в течение 
-                # 1-2 минут после окончания работы с тем же портом в 
+
+                # Разрешаем выполнять bind() даже в случае,
+                # если другая программа недавно слушала тот же порт.
+                # Без этого, программа не сможет работать с портом в течение
+                # 1-2 минут после окончания работы с тем же портом в
                 # ранее запущенной программе.
                 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
@@ -107,12 +107,12 @@ class FastCGI(Server):
             print("ERROR First FastCGI record wasn't a begin request.")
 
         self.fcgi_id = id
-        
+
         role, flags = struct.unpack('!HB5x', body)
 
         self.fcgi_role = self.role_name(role)
 
-        #Slurp 
+        #Slurp
         buffer = bytearray()
         env = dict()
         while True:
@@ -120,10 +120,10 @@ class FastCGI(Server):
                 (type, id, body) = self.read_record(c)
             except ValueEnd:
                 break
-            
+
             # Wrong id
             if self.fcgi_id != id: continue
-            
+
             #Parse params key value
             if type == 'PARAMS':
                 if body:
@@ -137,7 +137,7 @@ class FastCGI(Server):
 
                     name = buffer[:name_len]
                     buffer[:name_len] = []
-                    
+
                     value = buffer[:value_len]
                     buffer[:value_len] = []
 
@@ -146,11 +146,11 @@ class FastCGI(Server):
 
                     # Store connection information
                     if 'REMOTE_ADDR' in name.decode():
-                        tx.remote_address = value.decode() 
+                        tx.remote_address = value.decode()
 
                     if 'SERVER_PORT' in name.decode():
-                        tx.local_port = value.decode() 
-                    
+                        tx.local_port = value.decode()
+
 
             elif type == 'STDIN':
                 #Environment
@@ -166,25 +166,25 @@ class FastCGI(Server):
 
     def read_record(self,c):
         if not c: raise ValueEnd
-        
+
         header = self._read_chunk(c)
         if not header: raise ValueEnd
-            
+
         #big endian in network notation
         (version, type, id, clen, plen) = struct.unpack('!BBHHBx', header)
 
         body = self._read_chunk(c, clen + plen)
-        
+
         # No content, just paddign bytes
         if not clen: body = None
-        
+
         # Ignore padding bytes
         if plen: body = body[:clen]
 
         if __debug__: _debug(9, "Reading FastCGI record: {0} - {1} - {2}.".format(self.type_name(type), id, body))
 
         return self.type_name(type), id, body
-    
+
     def type_name(self,number):
         return TYPES[number - 1]
 
@@ -193,7 +193,7 @@ class FastCGI(Server):
 
     def role_name(self,number):
         return ROLES[number - 1]
-    
+
     def role_number(self, name):
         return ROLE_NUMBERS[name]
 
@@ -201,7 +201,7 @@ class FastCGI(Server):
         if __debug__: _debug(9,"Writing FCGI response")
 
         c = tx.connection
-        
+
         #Headers
         chunk = """Content-Type: text/plain
 Date: Tue, 30 Aug 2011 08:34:49 GMT
@@ -222,7 +222,7 @@ Content-Length: 6
 
     def write_record(self, c, type, id, body=None):
         if not c and not type and not id: return
-        
+
         #Write records
         empty = 1 if not body else 0
         body_len = len(body)
@@ -235,11 +235,11 @@ Content-Length: 6
             if __debug__: _debug(9, "Writing FastCGI record: {0} - {1} - {2}".format(type, id, body))
 
             #Send header
-            header = struct.pack('!BBHHBx', 
-                1, 
-                self.type_number(type), 
-                id, 
-                payload_len, 
+            header = struct.pack('!BBHHBx',
+                1,
+                self.type_number(type),
+                id,
+                payload_len,
                 pad_len
             )
             self._sendall(c, header)
@@ -247,13 +247,13 @@ Content-Length: 6
                 self._sendall(c, body)
             if pad_len:
                 self._sendall(c, bytes('\x00'*pad_len,"utf-8"))
-            
+
 
     def run(self):
         #preload application
         app = self.app()
         app.on_transaction.test()
-        
+
         try:
             while True:
                 #Accept connection
@@ -298,7 +298,7 @@ Content-Length: 6
             c - socket handler
             length - lenght of byte to read, default 8 byte
 
-        Return: 
+        Return:
             a few byte
         """
         chunk = bytearray()
@@ -321,7 +321,7 @@ Content-Length: 6
         # Try first byte
         len = struct.unpack('!B', buffer[:1])[0]
         buffer[:1] = []
-        
+
         # 4 byte length
         if len & 0x80:
             chunk  = buffer[:3]

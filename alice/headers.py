@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from alice import Alice
 
 # Headers
 GENERAL_HEADERS = [
@@ -79,13 +78,11 @@ NORMAL_CASE_HEADERS = dict()
 for name in HEADERS:
     NORMAL_CASE_HEADERS[name.lower()] = name
 
-class Headers(Alice):
+class Headers:
     """ Headers is a container and parser for HTTP headers """
     def __init__(self, headers=None, *args, **kwargs):
         if headers is None:
             self.headers = dict()
-
-        super().__init__(*args, **kwargs)
 
     def add(self, name, *args):
         # Make sure we have a normal case entry for name

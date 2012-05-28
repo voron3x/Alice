@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
-from alice import Alice
 
-class Transaction(Alice):
+class Transaction:
     def __init__(self,connection = None, *args, **kwargs):
         self.connection = connection
-        super().__init__(*args, **kwargs)
 
     def remote_address(self, addr = None):
         if addr is not None:

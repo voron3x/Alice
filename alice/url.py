@@ -4,8 +4,7 @@ Uniform Resource Locator
 
 """
 
-from alice import Alice
-from alice.utils import url_escape,url_unescape
+from alice.utils import url_escape, url_unescape
 import re
 
 # Characters (RFC 3986)
@@ -13,19 +12,17 @@ UNRESERVED = 'A-Za-z0-9\-\.\_\~'
 SUBDELIM   = '!\$\&\'\(\)\*\+\,\;\='
 PCHAR      = UNRESERVED + SUBDELIM + '\%\:\@'
 
-class URL(Alice):
-    def __init__(self, url=None, *args, **kwargs):
+class URL:
+    def __init__(self, url=None):
         self.url = url
         self.fragment = None
         self.host = None
         self.port = None
         self.scheme = None
         self.userinfo = None
-        super().__init__(*args, **kwargs)
 
         if self.url is not None:
             self.parse(url)
-
 
     @property
     def base(self):
@@ -43,38 +40,29 @@ class URL(Alice):
         """ Authority part of this URL. """
         #Set
         if authority:
-            userinfo = None
             host = authority
 
             # Userinfo
             match = re.search(r'^([^\@]+)\@(.+)$', authority)
             if match:
-                userinfo = url_unescape(march.group(0))
-                host = match.group(1)
-                self.userinfo = userinfo
+                self.userinfo = url_unescape(match.group(1))
+                host = match.group(2)
 
             # Port
-            port = None
-            print(host)
             match = re.search(r'^(.+)\:(\d+)$', host)
             if match:
-                host = match.group(0)
-                self.port = match.group(1)
+                host = match.group(1)
+                self.port = match.group(2)
 
             # Host
             host = url_unescape(host)
             match = re.search('[^\x00-\x7f]',host)
             if match:
                 self.host = host.decode("idna")
-                #return self.ihost(host)
-            else:
-                self.host = host
+                return self.ihost(host)
 
+            self.host = host
             return self.host
-
-                    
-
-        
 
     def parse(self,url):
         """ Parse URL. """
@@ -85,3 +73,7 @@ class URL(Alice):
 
         self.scheme = scheme
         self.authority(authority)
+
+
+
+
