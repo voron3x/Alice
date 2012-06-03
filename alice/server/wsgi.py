@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 """ WSGI сервер """
-from alice.server import Server
+from alice.server.base import Server
 
 class WSGI(Server):
     def __init__(self, *args, **kwargs):

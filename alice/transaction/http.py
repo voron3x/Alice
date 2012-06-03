@@ -1,5 +1,5 @@
-# -*- coding: utf-8 -*-
-from alice.transaction import Transaction
+# coding: utf-8
+from alice.transaction.base import Transaction
 from alice.message import Request, Response
 
 class TransactionHTTP(Transaction):

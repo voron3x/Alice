@@ -1,6 +1,6 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 
-from alice.server import Server
+from alice.server.base import Server
 import socket
 import struct
 import sys

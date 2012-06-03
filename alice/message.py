@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 import urllib.parse
 import alice.content
 import urllib.parse
